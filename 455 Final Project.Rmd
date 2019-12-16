@@ -1,0 +1,54 @@
+---
+title: "455 Final Project"
+author: "Hunter Finger"
+date: "11/18/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+library(car)
+library(dplyr)
+library(MASS)
+library(leaps)
+```
+
+
+```{r}
+raw.data = read.csv("~/Downloads/diamond.csv")
+
+for(i in 1:(ncol(raw.data)-1)){
+  plot(raw.data[,i], raw.data$price, ylab = "Price", xlab = colnames(raw.data[i]))
+}
+
+full.lm = lm(price ~ ., data = raw.data)
+summary(full.lm)
+plot(full.lm)
+vif(full.lm)
+
+subset = regsubsets(price~., data = raw.data, method = "forward")
+
+plot(subset, scale="adjr2")
+
+best.lm = lm(price~. - certification, data = raw.data)
+summary(best.lm)
+
+best.val= boxcox(best.lm, lamba = c(-2, 2, by = 1/100))
+best.val
+best.lam = best.val$x[which(best.val$y == max(best.val$y))]
+
+
+outlier = raw.data[-c(2,14,69),]
+
+nonout.mod = lm(price^best.lam~. - certification, data = outlier)
+summary(nonout.mod)
+
+
+
+certification.mod =  lm(price^best.lam~., data = outlier)
+plot(certification.mod)
+summary(certification.mod)
+```
+

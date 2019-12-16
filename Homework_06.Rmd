@@ -1,0 +1,163 @@
+# Matrices in R
+**Created by John Palowitch, UNC Chapel Hill**
+
+**Edited by Jan Hannig, UNC Chapel Hill**
+
+
+### Conceptual Questions 
+Please read the document ***Matrices in R.docx*** before completing this assignment. This assignment has two goals:
+
+-Learning new commands in R from a written source.
+
+-Using R for Matrix Calculations
+<br><br>
+1. Suppose:
+\[
+\mathbf{A} = \begin{bmatrix}2&3&4&5\\-1&0&3&2\end{bmatrix},\;\;\;\;\mathbf{B} = \begin{bmatrix}4&-1&10&0\\-2&-2&5&6\end{bmatrix}
+\]
+\[
+\mathbf{a} = \begin{bmatrix}6&2&-11&1\end{bmatrix},\;\;\;\;\mathbf{b} = \begin{bmatrix}4\\2\\3\\0\end{bmatrix},\;\;\;\;\mathbf{c} = \begin{bmatrix}-3\\-10\end{bmatrix}
+\]
+    a. Write down the dimensions of the following (you can use a comment box that you create). If the operation is not possible, write "N.P."
+        i. $\mathbf{A}^T\mathbf{B}$   4X4 (first one done for you!)
+        ii. $\mathbf{B}\mathbf{A}^T$  4X4
+```{r}
+A = rbind(c(2:5), c(-1, 0, 3, 2))
+B = rbind(c(4, -1, 10, 0), c(-2, -2, 5, 6))
+a = cbind(6,2,-11, 1)
+b = rbind(4, 2, 3, 0)
+c = rbind(-3, -10)
+dim(t(A)%*%B)
+
+```
+        iii. $\mathbf{A}\mathbf{B}$  N.P.
+```{r}
+#dim(A%*%B)
+```
+        iv. $\mathbf{A}^T\mathbf{A}$ 4X4
+```{r}
+dim(t(A)%*%A)
+```
+        v. $\mathbf{b}^T\mathbf{A}$ N.P.
+```{r}
+#dim(t(b)%*%A)
+```
+        vi. $\mathbf{a}\mathbf{A}^T$ 1X2
+```{r}
+dim(a%*%t(A))
+```
+        vii. $\mathbf{B}\mathbf{b}$ 2X1
+```{r}
+dim(B%*%b)
+```
+        viii. $\mathbf{B}\mathbf{c}^T$ N.P.
+```{r}
+#dim(B%*%t(c))
+```
+        ix. $\mathbf{a}\mathbf{c}$ N.P.
+```{r}
+#dim(a%*%c)
+```
+        x. $\mathbf{b}\mathbf{a}$ 4X4
+```{r}
+dim(b%*%a)
+```
+    b. Again, write down the dimensions of the following (on this sheet, next to the expression). If the operation is not possible, write "N.P."
+        i. $(\mathbf{A}^T\mathbf{B})^{-1}\mathbf{a}$ N.P.
+```{r}
+step1 = (t(A)%*%B)
+det(step1)
+```
+        ii. $\mathbf{c}(\mathbf{B}\mathbf{A}^T)^{-1}$ N.P.
+```{r}
+step1 = solve(B%*%t(A))
+#dim(c%*%step1)
+```
+        iii. $(\mathbf{B}^T\mathbf{B})^{-1}\mathbf{B}^T\mathbf{c}$ N.P.
+```{r}
+#step1 = solve(t(B)%*%B)
+#dim(step1%*%t(B)%*%c)
+```        
+        iv. $\mathbf{b}^T\mathbf{A}^T\mathbf{c}$ 1X1
+```{r}
+dim(t(b)%*%t(A)%*%c)
+```
+        v. $(\mathbf{B}\mathbf{B}^T)^{-1}\mathbf{B}\mathbf{b}$ 2X1
+```{r}
+step1 = solve(B%*%t(B))
+dim(step1%*%B%*%b)
+```
+      
+        
+### Applied Questions 
+2. In a code block below, create and print the following matrices and vectors:
+\[
+\mathbf{A} = \begin{bmatrix}-6&0&1\\1&10&7.5\end{bmatrix},\;\;\;\;\mathbf{B} = \begin{bmatrix}-15&1&1\\5.25&1&2.5\end{bmatrix}
+\]
+\[
+\mathbf{a} = \begin{bmatrix}6&2&1\end{bmatrix},\;\;\;\;\mathbf{b} = \begin{bmatrix}2\\-7\end{bmatrix}
+\]
+
+```{r}
+A = rbind(c(-6,0,1),c(1,10,7.5))
+B = rbind(c(-15,1,1), c(5.25,1,2.5))
+a = cbind(6,2,1)
+b = rbind(2,-7)
+A
+B
+a
+b
+
+```
+
+3. Compute (with **R**, in a new code block below) and print the following products:
+    a. $\mathbf{A}^T\mathbf{B}$
+```{r}
+t(A)%*%B
+```
+    b. $\mathbf{B}\mathbf{a}^T$
+```{r}
+B%*%t(a)
+```
+    c. $\mathbf{b}^T\mathbf{A}$
+```{r}
+t(b)%*%A
+```
+    d. $\mathbf{A}^T\mathbf{b}$
+```{r}
+t(A)%*%b
+```
+    e. $\mathbf{a}^T\mathbf{a}$
+```{r}
+t(a)%*%a
+```
+    f. $\mathbf{a}\mathbf{a}^T$
+```{r}
+a%*%t(a)
+```
+    g. $(\mathbf{A}^T\mathbf{A})^{-1}$
+```{r}
+#solve(t(A)%*%A)
+```
+
+The determinant of this matrix is 0, therefore it is not invertable.
+
+    h. $(\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{b}$
+```{r}
+#solve(t(A)%*%A)%*%A%*%b
+```
+
+The determinant of this matrix is 0, therefore it is not invertable.
+
+    i. $\mathbf{b}^T\mathbf{A}\mathbf{a}^T$
+```{r}
+t(b)%*%A%*%t(a)
+```
+    j. $\mathbf{a}\mathbf{B}\mathbf{A}^T\mathbf{b}$
+```{r}
+#a%*%B%*%t(A)%*%b
+```
+
+a is a 1X3 and B is a 1X2, the dimensions do not line up for matrix multiplication.
+
+
